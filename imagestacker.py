@@ -90,6 +90,7 @@ class ImageStacker():
 
         shifts = np.max(self.peaks, axis= 0) - self.peaks
 
+        # Loop through images, shift em, stack em
         shift_and_added = np.zeros((self.height +y_enlargement, self.length +x_enlargement, self.num_channels))
         weights = np.zeros((self.height +y_enlargement, self.length +x_enlargement))
         for image, shift in zip(self.raw_images, shifts):
