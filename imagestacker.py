@@ -5,10 +5,9 @@ from PIL import Image
 from scipy import signal as spsig, optimize as spopt
 
 class ImageStacker():
-    def __init__(self, data_dir, save_dir):
-        self.data_dir = data_dir
-        self.save_dir = save_dir
-        self.data_files = os.listdir(data_dir)
+    def __init__(self):
+        self.data_dir = ""
+        self.save_dir = ""
 
         self.ref_image = 0        
         self.interp = 1
@@ -17,7 +16,8 @@ class ImageStacker():
         self.raw_images = []
 
     def open_images(self):
-        valid_file_extentions = ".png", ".tif"  
+        valid_file_extentions = ".png", ".tif" 
+        self.data_files = os.listdir(self.data_dir) 
 
         # Loop through files in directory and add images
         images = []
@@ -45,6 +45,8 @@ class ImageStacker():
         self.num_images, self.height, self.length, self.num_channels = images.shape
         self.raw_images = images
 
+        print("Images opened!")
+
     def peaks(self):
         self.peaks = [np.unravel_index(np.argmax(image), image.shape) for image in self.raw_images[:,:,:,0]]
 
@@ -67,7 +69,7 @@ class ImageStacker():
             
             self.peaks = np.concatenate((self.peaks, [[round(y),round(x)]]), axis= 0)
 
-    def cresent(self):
+    def crescent(self):
         self.peaks = np.ndarray(shape= (0,2), dtype= int)
         for image in self.raw_images[:,:,:,0]:
             
